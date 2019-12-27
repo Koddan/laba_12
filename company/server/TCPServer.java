@@ -14,7 +14,7 @@ public class TCPServer {
     public TCPServer(int port) {
 
         try {
-            this.clients = new ArrayList<TCPClient>();
+            this.clients = new ArrayList<>();
             this.serverSocket = new ServerSocket(port);
         } catch (IOException e) {
             e.printStackTrace();
@@ -38,7 +38,7 @@ public class TCPServer {
                 this.clients.add(newClient);
                 ClientThread clientThread = new ClientThread(newClient, this.clients);
                 clientThread.start();
-
+                outPut.writeUTF("Connected");
 
             } catch (IOException e) {
                 e.printStackTrace();

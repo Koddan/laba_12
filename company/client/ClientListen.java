@@ -1,20 +1,20 @@
 package com.company.client;
 
-import java.io.*;
+import java.io.DataInputStream;
+import java.io.IOException;
 import java.net.*;
-import java.util.*;
 
 public class ClientListen extends Thread {
 
     Socket clientSocket;
-    DataOutputStream outPut;
+    DataInputStream inPut;
 
     public ClientListen(Socket clientSocket) {
 
         try {
 
             this.clientSocket = clientSocket;
-            this.outPut = new DataOutputStream(clientSocket.getOutputStream());
+            this.inPut = new DataInputStream(clientSocket.getInputStream());
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -28,10 +28,12 @@ public class ClientListen extends Thread {
 
             while (true) {
 
-                Scanner scanner = new Scanner(System.in);
-                String message = scanner.nextLine();
-                outPut.writeUTF(message);
+                String message = inPut.readUTF();
+                System.out.println(message);
 
+                if (message.contains("Disconnected")) {
+                    break;
+                }
             }
 
         } catch (IOException e) {

@@ -42,16 +42,26 @@ public class ClientThread extends Thread {
                     if (message.contains("@quit")) {
                         for (int i = 0; i < clients.size(); i++) {
                             if (clients.get(i).getSocket().equals(client.getSocket())) {
+                                (new DataOutputStream(clients.get(i).getSocket().getOutputStream())).writeUTF("Disconnected");
                                 clients.remove(clients.get(i));
                             }
                         }
                         break;
                     }
                     else {
-
-                        for (int i = 0; i < clients.size(); i++) {
-                            if (!clients.get(i).getSocket().equals(client.getSocket())) {
-                                (new DataOutputStream(clients.get(i).getSocket().getOutputStream())).writeUTF(client.getName() + ": " + message);
+                        if (message.contains("@name")) {
+                            client.setName(message.split(" ")[1]);
+                            for (int i = 0; i < clients.size(); i++) {
+                                if (clients.get(i).getSocket().equals(client.getSocket())) {
+                                    clients.get(i).setName(message.split(" ")[1]);
+                                }
+                            }
+                        }
+                        else {
+                            for (int i = 0; i < clients.size(); i++) {
+                                if (!clients.get(i).getSocket().equals(client.getSocket())) {
+                                    (new DataOutputStream(clients.get(i).getSocket().getOutputStream())).writeUTF(client.getName() + ": " + message);
+                                }
                             }
                         }
                     }

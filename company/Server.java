@@ -1,5 +1,7 @@
 package com.company;
 
+import com.company.server.TCPServer;
+
 public class Server {
 
     public static void main(String[] args) {
